@@ -31,7 +31,7 @@ then
         sleep 2
         sudo apt update && sudo apt upgrade -y
         clear
-        sudo usermod -aG sudo ubuntu
+        sudo usermod -a -G sudo ubuntu
         echo "$(tput setaf 44)[Assistant Samira]:$(tput setaf 7) Antes de instalar irei verificar se você possui os recursos para a nossa aplicação"
         sleep 1
         echo "Analisando."
