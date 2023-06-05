@@ -1,22 +1,17 @@
 #!/bin/bash
-echo "
-
-   _____                      _                        _       _   _      
+echo " 
+   _____                       _                        _       _   _      
   / ____|                    | |     /\               | |     | | (_)     
  | (___  _ __ ___   __ _ _ __| |_   /  \   _ __   __ _| |_   _| |_ _  ___ 
-  \___ \| '_ ` _ \ / _` | '__| __| / /\ \ | '_ \ / _` | | | | | __| |/ __|
+  \___ \| _  _ \ / _ | __| __| / /\ \ | _ \ / _ | | | | | __| |/ __|
   ____) | | | | | | (_| | |  | |_ / ____ \| | | | (_| | | |_| | |_| | (__ 
  |_____/|_| |_| |_|\__,_|_|   \__/_/    \_\_| |_|\__,_|_|\__, |\__|_|\___|
                  __  __            _     _                __/ |           
                 |  \/  |          | |   (_)              |___/            
                 | \  / | __ _  ___| |__  _ _ __   ___                     
-                | |\/| |/ _` |/ __| '_ \| | '_ \ / _ \                    
+                | |\/| |/ _ |/ __| _ \| | _ \ / _ \                    
                 | |  | | (_| | (__| | | | | | | |  __/                    
-                |_|  |_|\__,_|\___|_| |_|_|_| |_|\___|                    
-                                                                          
-                                                                         
-                        
-                        
+                |_|  |_|\__,_|\___|_| |_|_|_| |_|\___|                               
 "
 sleep 2
 echo "$(tput setaf 44)[Assistant Samira]:$(tput setaf 7) Olá :D seja bem-vindo!"
@@ -298,6 +293,7 @@ read resp2
         then
         sudo docker start BancoSAM
         echo "$(tput setaf 44)[Assistant Samira]:$(tput setaf 7) Abrindo aplicação..."
+        cd sam/aplicacao-java/smart-analytic-machine/target
         java -jar smart-analytic-machine-1.0-SNAPSHOT-jar-with-dependencies.jar
         else 
         sleep 2
