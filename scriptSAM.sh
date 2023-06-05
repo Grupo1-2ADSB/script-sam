@@ -66,7 +66,7 @@ then
         then 
                 echo "$(tput setaf 44)[Assistant Samira]:$(tput setaf 7) Legal!"
                 sleep 2
-                echo "Docker já está instalado!"
+                echo "$(tput setaf 44)[Assistant Samira]:$(tput setaf 7) Docker já está instalado!"
                 sleep 2
         else 
                 echo "$(tput setaf 44)[Assistant Samira]:$(tput setaf 7) Docker não instalado!"
