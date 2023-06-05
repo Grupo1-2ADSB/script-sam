@@ -107,8 +107,7 @@ CREATE TABLE tbAlerta (
     idAlerta INT PRIMARY KEY AUTO_INCREMENT,
     tipoAlerta VARCHAR(45) NOT NULL,
     CONSTRAINT chkTipoAlerta CHECK (tipoAlerta IN ('Amarelo', 'Vermelho')),
-    descricaoAlerta VARCHAR(255) NOT NULL,
-    perAlerta DOUBLE NOT NULL
+    descricaoAlerta VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE tbUnidade (
@@ -135,7 +134,8 @@ CREATE TABLE tbAlertaComponente (
     fkTipoComponente INT,
     FOREIGN KEY (fkTipoComponente) REFERENCES tbTipoComponente(idTipoComponente),
     fkAlerta INT,
-    CONSTRAINT fkAlerta FOREIGN KEY (fkAlerta) REFERENCES tbAlerta(idAlerta)
+    CONSTRAINT fkAlerta FOREIGN KEY (fkAlerta) REFERENCES tbAlerta(idAlerta),
+    perAlerta DOUBLE NOT NULL
 );
 
 CREATE TABLE tbMaquina (
@@ -179,7 +179,10 @@ CREATE TABLE tbLog (
     descricaoLog VARCHAR(255) NOT NULL,
     solucaoLog VARCHAR(255) NOT NULL,
     fkUsuario INT,
-    CONSTRAINT fkUsuario FOREIGN KEY (fkUsuario) REFERENCES tbUsuario(idUsuario)
+    CONSTRAINT fkUsuario FOREIGN KEY (fkUsuario) REFERENCES tbUsuario(idUsuario),
+    fkAlertaComponenteL INT,
+    CONSTRAINT fkAlertaComponenteL 
+    FOREIGN KEY (fkAlertaComponenteL) REFERENCES tbAlertaComponente(idAlertaComponente)
 );
 
 CREATE TABLE tbConfig (
@@ -214,19 +217,25 @@ INSERT INTO tbPermissao VALUES (NULL, 'SUPORTE', 'NOC');
 
 INSERT INTO tbEmpresa VALUES
 	(NULL, '1010101010106', 'CSU', 'Ricardo', '06315200', 12, '12345678901234'),
-	(NULL, '2020202020207', 'Infinit', 'Marcia', '06315100', 1, '32345678901234');
+	(NULL, '2020202020207', 'Infinit', 'Nicholas', '06315100', 1, '32345678901234'),
+	(NULL, '3030303030308', 'ABC Company', 'Laura', '06315300', 3, '92345678901234'),
+	(NULL, '4040404040409', 'XYZ Corp', 'Daniel', '06315400', 4, '52345678901234'),
+	(NULL, '5050505050501', 'Tech Solutions', 'Gabriela', '06315500', 5, '72345678901234'),
+	(NULL, '6060606060602', 'Acme Inc.', 'Luiz', '06315600', 6, '82345678901235'),
+	(NULL, '7070707070703', 'Inovação Ltda', 'Mariana', '06315700', 7, '62345678901236'),
+	(NULL, '8080808080804', 'Global Corp', 'Ana', '06315800', 8, '42345678901237'),
+	(NULL, '9090909090905', 'Tech Solutions', 'Rodrigo', '06315900', 9, '22345678901238'),
+	(NULL, '1111111111116', 'ABC Company', 'Carolina', '06316000', 11, '82345678901239');
 
 INSERT INTO tbAlerta VALUES
-	(NULL, 'Vermelho', 'Máquina apresenta falhas críticas.', 32.4),
-	(NULL, 'Amarelo', 'Máquina prestes a travar.', 22.3);
+	(NULL, 'Vermelho', 'Máquina apresenta falhas críticas.'),
+	(NULL, 'Amarelo', 'Máquina prestes a travar.');
 
 INSERT INTO tbUnidade (nome, sigla) VALUES
 	('Gigabytes', 'GB'),
 	('Terabytes', 'TB'),
-	('Megahertz', 'MHz'),
 	('Gigahertz', 'GHz'),
-	('Megabits por segundo', 'MBPS'),
-	('Rotação por segundo', 'RPM');
+	('Megabits por segundo', 'MBPS');
 
 INSERT INTO tbTipoComponente (tipoComponente) VALUES 
 	('Memória RAM'),
@@ -235,41 +244,121 @@ INSERT INTO tbTipoComponente (tipoComponente) VALUES
 	('CPU');
 
 INSERT INTO tbComponente VALUES 
-	(NULL, 'Ram', '4GB', 1),
-	(NULL, 'Disco rígido Seagate Barracuda', '2TB', 2);
+	(NULL, 'Ram Kingston', '4GB', 1),
+	(NULL, 'Ram Corsair', '4GB', 1),
+	(NULL, 'Ram G.Skill', '4GB', 1),
+	(NULL, 'Disco rígido Seagate Barracuda', '2TB', 2),
+	(NULL, 'Disco rígido Western Digital', '2TB', 2),
+	(NULL, 'Disco rígido Toshiba', '2TB', 2),
+	(NULL, 'Placa de rede TP-Link', 'Ethernet', 3),
+	(NULL, 'Placa de rede D-Link', 'Ethernet', 3),
+	(NULL, 'Placa de rede Intel', 'Ethernet', 3),
+	(NULL, 'CPU Intel Core i7', '3.6GHz', 4),
+	(NULL, 'CPU AMD Ryzen 7', '3.6GHz', 4),
+	(NULL, 'CPU Intel Core i9', '3.6GHz', 4);
 
 INSERT INTO tbAlertaComponente (fkTipoComponente, fkAlerta) VALUES
-	(1, 1), 
-	(1, 2), 
-	(2, 1), 
-	(2, 2),
-	(3, 1),
-	(3, 2);
+	(1, 1, 32.4),
+	(1, 2, 22.3),
+	(2, 1, 45.1),
+	(2, 2, 19.8),
+	(3, 1, 55.7),
+	(3, 2, 18.6),
+    (4, 1, 60.2),
+    (4, 2, 12.9),
+    (1, 2, 60.2),
+    (1, 1, 60.2);
 
 INSERT INTO tbMaquina (nSerie, statusMaquina, modeloMaquina, tipoDisco, marca, tipoMaquina, sistemaOperacional, arquiteturaCPU) VALUES 
 	('001', 'Ativo', 'Modelo A', 'SSD', 'Marca 1', 'Notebook', 'Linux', 64),
-	('002', 'Inativo', 'Modelo B', 'HD', 'Marca 2', 'Desktop', 'Windows', 32);
+	('002', 'Inativo', 'Modelo B', 'HD', 'Marca 2', 'Desktop', 'Windows', 32),
+    ('003', 'Ativo', 'Modelo C', 'SSD', 'Marca 3', 'Notebook', 'Linux', 32),
+    ('004', 'Ativo', 'Modelo D', 'SSD', 'Marca 4', 'Desktop', 'Windows', 64),
+    ('005', 'Ativo', 'Modelo E', 'HD', 'Marca 5', 'Notebook', 'Linux', 64),
+    ('006', 'Ativo', 'Modelo F', 'HD', 'Marca 6', 'Notebook', 'Windows', 32),
+    ('007', 'Ativo', 'Modelo G', 'HD', 'Marca 7', 'Desktop', 'Linux', 32),
+    ('008', 'Ativo', 'Modelo H', 'SSD', 'Marca 8', 'Notebook', 'Linux', 64),
+    ('009', 'Ativo', 'Modelo I', 'SSD', 'Marca 9', 'Notebook', 'Windows', 32),
+    ('010', 'Ativo', 'Modelo J', 'SSD', 'Marca 10', 'Desktop', 'Windows', 32);
 
-INSERT INTO tbUsuario VALUES (NULL, 'host1', 'Marcio', 'marcio@gmail.com', 'senha123', 'Disponível', 1, 1, 1);
+INSERT INTO tbUsuario VALUES (NULL, 'host01', 'Marcio', 'marcio@gmail.com', 'senha123', 'Disponível', 1, 1, 1);
 INSERT INTO tbUsuario VALUES (NULL, 'host02', 'Joana', 'joana@gmail.com', 'senha123', 'Disponível', 2, 2, 2);
+INSERT INTO tbUsuario VALUES (NULL, 'host03', 'Fabricio', 'fabricio@gmail.com', 'senha123', 'Disponível', 3, 1, 3);
+INSERT INTO tbUsuario VALUES (NULL, 'host04', 'Amanda', 'amanda@gmail.com', 'senha123', 'Disponível', 4, 1, 4);
+INSERT INTO tbUsuario VALUES (NULL, 'host05', 'Pedro', 'pedro@gmail.com', 'senha123', 'Disponível', 5, 1, 5);
+INSERT INTO tbUsuario VALUES (NULL, 'host06', 'Marcos', 'marcos@gmail.com', 'senha123', 'Disponível', 6, 1, 6);
+INSERT INTO tbUsuario VALUES (NULL, 'host07', 'Fátima', 'fatima@gmail.com', 'senha123', 'Disponível', 7, 1, 7);
+INSERT INTO tbUsuario VALUES (NULL, 'host08', 'Luan', 'luan@gmail.com', 'senha123', 'Disponível', 8, 1, 8);
+INSERT INTO tbUsuario VALUES (NULL, 'host09', 'Beatriz', 'beatriz@gmail.com', 'senha123', 'Disponível', 9, 1, 9);
+INSERT INTO tbUsuario VALUES (NULL, 'host10', 'José', 'jose@gmail.com', 'senha123', 'Disponível', 10, 1, 10);
+
+INSERT INTO tbLog VALUES 
+(NULL, NOW(), 'Erro de Sistema', 'O sistema apresentou falhas', 'Reiniciar', 1),
+(NULL, NOW(), 'Erro de Sistema', 'O sistema apresentou falha', 'Reiniciar', 2),
+(NULL, NOW(), 'Erro de Sistema', 'O sistema apresentou falha', 'Reiniciar', 3),
+(NULL, NOW(), 'Sistema em Alerta', 'Tome cuidado', 'Reiniciar', 3);
 
 INSERT INTO tbConfig VALUES
-	(NULL,  1, 1),
-	(NULL,  2, 2);
+	( 1, 1),
+    ( 1, 4),
+	( 1, 7),
+	( 1, 10),
+	( 2, 2),
+	( 2, 5),
+    ( 2, 8),
+    ( 2, 11),
+    ( 3, 3),
+    ( 3, 6),
+    ( 3, 9),
+    ( 3, 12),
+    ( 4, 1),
+    ( 4, 4),
+    ( 4, 7),
+    ( 4, 10),
+    ( 5, 1),
+    ( 5, 4),
+    ( 5, 7),
+    ( 5, 10),
+    ( 6, 1),
+    ( 6, 4),
+    ( 6, 7),
+    ( 6, 10),
+    ( 7, 1),
+    ( 7, 4),
+    ( 7, 7),
+    ( 7, 10),
+    ( 8, 1),
+    ( 8, 4),
+    ( 8, 7),
+    ( 8, 10),
+    ( 9, 1),
+    ( 9, 4),
+    ( 9, 7),
+    ( 9, 10),
+    ( 10, 1),
+    ( 10, 4),
+    ( 10, 7),
+    ( 10, 10);
 
 INSERT INTO tbLeitura VALUES
-	(NULL, 0.25, NOW(), 1, 1),
-	(NULL, 50.17, NOW(), 2, 2);
+	(NULL, 0.3, NOW(), 1, 1),
+    (NULL, 0.2, NOW(), 2, 2),
+    (NULL, 0.35, NOW(), 3, 3),
+    (NULL, 0.25, NOW(), 4, 4),
+    (NULL, 0.28, NOW(), 5, 5),
+    (NULL, 0.18, NOW(), 6, 6),
+    (NULL, 0.33, NOW(), 7, 7),
+    (NULL, 0.23, NOW(), 7, 7),
+    (NULL, 0.29, NOW(), 8, 8),
+    (NULL, 0.19, NOW(), 9, 9),
+    (NULL, 0.31, NOW(), 10, 10);
 
 INSERT INTO tbUnidadeComponente (fkTipoComponente, fkUnidade) VALUES
-	(1, 1), 
-	(1, 2), 
+	(1, 1),
 	(2, 1),
-	(2, 2), 
-	(2, 6),
-	(3, 5), 
-	(4, 3), 
-	(4, 4); 
+	(2, 2),
+	(3, 4), 
+	(4, 4);
 "
     sleep 10
         clear
