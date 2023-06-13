@@ -356,20 +356,7 @@ INSERT INTO tbUnidadeComponente VALUES
         sudo docker run -d -t --name cliSAM openjdk
         sudo docker cp sam-cli/cli-java/target/smart-analytic-machine-1.0-SNAPSHOT-jar-with-dependencies.jar cliSAM:/home
         echo "$(tput setaf 44)[Assistant Samira]:$(tput setaf 7) Instalação feita com sucesso!"
-        echo "$(tput setaf 44)[Assistant Samira]:$(tput setaf 7) Abrindo aplicação cli..."
-        sudo docker exec -it cliSAM bash -e "cd home/" -e"java -jar smart-analytic-machine-1.0-SNAPSHOT-jar-with-dependencies.jar"
 else 
-echo "$(tput setaf 44)[Assistant Samira]:$(tput setaf 7) Você ja possui nossa aplicação? (y/n)"
-read resp2
-        if [ $resp2 = "y" ]
-        then
-        sudo docker start BancoSAM
-        sudo docker start cliSAM
-        echo "$(tput setaf 44)[Assistant Samira]:$(tput setaf 7) Abrindo aplicação..."
-        sudo docker exec -it cliSAM bash -e "cd home/" -e"java -jar smart-analytic-machine-1.0-SNAPSHOT-jar-with-dependencies.jar"
-        else 
-        sleep 2
-        fi
 echo "$(tput setaf 44)[Assistant Samira]:$(tput setaf 7) Você NÃO ACEITOU a instalação :("
 sleep 1
 echo "$(tput setaf 44)[Assistant Samira]:$(tput setaf 7) Caso mude de idéia ou erro de digitação, execute novamento o script e siga os passos ;)"
